@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "propertyId": 1,
+    "firstName": "Max",
+    "lastName": "Mustermann",
+    "email": "Max.Mustermann@mustermann.at",
+    "doorNum": "20",
+    "hash": "c4ca4238a0b923820dcc509a6f75849b"
+  },
+  {
+    "id": 2,
+    "propertyId": 1,
+    "firstName": "Otto",
+    "lastName": "Normalverbraucher",
+    "email": "Otto.Normalverbraucher@otto.at",
+    "doorNum": "1",
+    "hash": "c81e728d9d4c2f636f067f89cc14862c"
+  }
+]

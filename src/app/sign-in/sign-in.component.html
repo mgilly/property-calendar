@@ -1,0 +1,56 @@
+<div class="col-md-6 offset-md-3">
+  <div class="card-block">
+    <h4 class="card-title">Sign In</h4>
+
+
+    <!-- <div style="padding-top:30px" class="panel-body"> -->
+
+    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+    <form role="form">
+
+      <div class="form-group row">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+          <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+        </div>
+      </div>
+
+      <div style="margin-top:10px" class="form-group row">
+        <!-- Button -->
+
+        <div class="col-sm-12 controls">
+          <button type="button" href="#" class="btn btn-success" disabled>Login</button>
+          <button type="button" href="#" class="btn btn-primary" disabled>Login with Facebook</button>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <div class="col-md-12 control">
+          <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+            Don't have an account!
+            <button type="button" class="btn btn-link" onClick="$('#loginbox').hide(); $('#signupbox').show()" disabled>Sign Up Here</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+  <div class="card-block">
+    <h4 class="card-title">Shortcuts...</h4>
+
+    <button type="button" class="btn btn-outline-danger btn-lg" (click)="logAsAdmin()">Administrator</button>
+    <button type="button" class="btn btn-outline-warning btn-lg" (click)="logAsWorker()">Worker</button>
+
+  </div>
+</div>

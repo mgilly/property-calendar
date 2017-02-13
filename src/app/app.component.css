@@ -1,0 +1,13 @@
+@media (min-width: 576px)
+.ga-title {
+    font-size: 3rem;
+}
+
+@media (min-width: 576px)
+.ga-spacing {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-width: .2rem;
+}

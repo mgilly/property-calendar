@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+@media (min-width: 576px) {
+  .ga-spacing {
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .ga-form {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-width: .2rem;
+  }
+}
+
+/*h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}*/

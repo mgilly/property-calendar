@@ -1,0 +1,9 @@
+	<div class="col-md-10 offset-md-1" *ngIf="tenant != null">
+		<div class="card-block">
+			<h4 class="card-title">Tenant: {{tenant.firstName}} {{tenant.lastName}}</h4>
+			<mwl-calendar-week-view
+			  [viewDate]="viewDate"
+			  [events]="events">
+			</mwl-calendar-week-view>
+		</div>
+	</div>

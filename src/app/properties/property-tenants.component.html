@@ -1,0 +1,45 @@
+<div class="col-10 offset-1" *ngIf="property != null && tenants != null">
+  <div class="card-block">
+    <div class="row">
+      <div class="col-10">
+        <h4 class="card-title">Tenants: {{property.address}}</h4>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-outline-primary btn-block disabled" type="button">Add</button>
+      </div>
+    </div>
+    <!-- <div class='table-responsive' *ngIf='cars && cars.length'> -->
+    <table class="table table-hover">
+      <thead>
+        <th>Door</th>
+        <th>Name</th>
+        <th>email</th>
+        <th>calendar</th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let tenant of tenants'>
+          <td>{{tenant.doorNum}}</td>
+          <td>{{tenant.firstName}} {{tenant.lastName}}</td>
+          <td>{{tenant.email}}</td>
+          <td>
+            <button class="btn btn-link" type="button" [routerLink]="['/tenant-calendar', tenant.hash]">link</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- </div> -->
+  </div>
+</div>
+
+<template #content let-close="close">
+  <!-- <div class="modal-header">
+    <h4 class="modal-title">{{selectedDate | date: 'yyyy-MM-dd'}}</h4>
+  </div> -->
+  <div class="modal-body">
+      <a [routerLink]="['/tenant-calendar', encodedTenantId ]">link</a>
+  </div>
+  <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addEvent()">Add</button>
+      <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+  </div> -->
+</template>
