@@ -7,26 +7,30 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/find';
 import 'rxjs/add/observable/of';
 
-
+import { ConfigService } from '../config.service';
 import { ITenant } from './tenant';
 
 @Injectable()
 export class TenantService {
-	private _url = 'api/tenants.json';
+	private url = '/tenants';
 
-	constructor(private _http: Http) {}
+	constructor(private http: Http, private config: ConfigService) {}
 
 	getAllTenants(): Observable<ITenant[]> {
-		return this._http.get(this._url).map((response: Response) => <ITenant[]> response.json());
+		var _url: string = this.config.getServiceUrl() + this.url;
+	  return this.http.get(_url).map((response: Response) => {
+			var body = response.json()
+			return <ITenant[]> body.content;
+		});
 	}
 
-	getTenants(propertyId: number): Observable<ITenant[]> {
-		return this.getAllTenants().map((tenants: ITenant[]) => tenants.filter(p => p.propertyId === propertyId));
+	getTenants(propertyId: string): Observable<ITenant[]> {
+		return this.getAllTenants().map((tenants: ITenant[]) => tenants.filter(t => t.propertyId == propertyId));
 	}
 
-	findTenantById(id: number): Observable<ITenant> {
+	findTenantById(id: string): Observable<ITenant> {
 		return this.getAllTenants()
-			.map((tenants: ITenant[]) => tenants.find(p => p.id === id));
+			.map((tenants: ITenant[]) => tenants.find(p => p.id == id));
 	}
 
 	findTenantByHash(hash: string): Observable<ITenant> {

@@ -4,20 +4,24 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
+import { ConfigService } from '../config.service';
 import { IProperty } from './property';
 
 @Injectable()
 export class PropertyService {
-	private _url = 'api/properties/properties.json';
+	private url = '/properties';
 
-	constructor(private _http: Http) {}
+	constructor(private http: Http, private config: ConfigService) {}
 
 	getProperties(): Observable<IProperty[]> {
-		return this._http.get(this._url).map((response: Response) => <IProperty[]> response.json());
+		var _url: string = this.config.getServiceUrl() + this.url;
+	  return this.http.get(_url).map((response: Response) => {
+			var body = response.json()
+			return <IProperty[]> body.content;
+		});
 	}
 
-	getProperty(id: number): Observable<IProperty> {
-		return this.getProperties()
-			.map((properties: IProperty[]) => properties.find(p => p.id === id));
+	getProperty(id: string): Observable<IProperty> {
+		return this.getProperties().map((properties: IProperty[]) => properties.find(p => p.id == id));
 	}
 }

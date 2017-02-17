@@ -1,4 +1,4 @@
 export interface IProperty {
-  id: number;
+  id: string;
 	address: string;
 }

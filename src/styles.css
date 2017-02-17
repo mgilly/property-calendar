@@ -1,23 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-
-@media (min-width: 576px) {
-  .ga-spacing {
-	padding-top: 1.5rem;
-	padding-bottom: 1.5rem;
-  }
+.cal-disabled {
+  background-color: #eee;
+  pointer-events: none;
 }
 
-@media (min-width: 576px) {
-  .ga-form {
-    padding: 1.5rem;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    border-width: .2rem;
-  }
+.cal-disabled .cal-day-number {
+  opacity: 0.1;
 }
-
-/*h1, h2, h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}*/

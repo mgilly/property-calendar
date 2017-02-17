@@ -1,6 +1,6 @@
 export interface ITenant {
-  id: number;
-  propertyId: number;
+  id: string;
+  propertyId: string;
 	firstName: string;
   lastName: string;
   email: string;

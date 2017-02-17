@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModule } from 'angular-calendar';
 
+import { ConfigService } from './config.service';
 import { AuthGuard } from './authn/auth-guard';
 import { AuthService } from './authn/auth.service';
 import { AppComponent } from './app.component';
@@ -19,6 +20,9 @@ import { PropertyService } from './properties/property.service';
 
 import { TenantCalendarComponent } from './tenants/tenant-calendar.component'
 import { TenantService } from './tenants/tenant.service';
+
+import { WorkdayService } from './events/workday.service';
+import { EventService } from './events/event.service';
 
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -53,10 +57,14 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     CalendarModule.forRoot()
   ],
   providers: [
+      {provide: Window, useValue: window},
       AuthGuard,
       AuthService,
       PropertyService,
       TenantService,
+      ConfigService,
+      WorkdayService,
+      EventService,
   ],
   bootstrap: [AppComponent]
 })

@@ -21,7 +21,7 @@ export class PropertyTenantsComponent implements OnInit {
 
 	ngOnInit() {
 		this._route.params.subscribe(params => {
-			let propertyId = +params['id'];
+			let propertyId = params['id'];
 			this._propertyService.getProperty(propertyId).subscribe(property => this.property = property);
 			this._tenantService.getTenants(propertyId).subscribe(tenants => this.tenants = tenants);
 		})
