@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
+import { ConfigService } from '../config.service';
 import { PropertyService } from './property.service';
 import { IProperty } from './property';
-
 import { TenantService } from '../tenants/tenant.service';
 import { ITenant } from '../tenants/tenant';
 
@@ -13,11 +13,13 @@ import { ITenant } from '../tenants/tenant';
 })
 export class PropertyTenantsComponent implements OnInit {
 
-	constructor(private _route: ActivatedRoute, private _propertyService: PropertyService, private _tenantService: TenantService, private modal: NgbModal) { }
+	constructor(private _route: ActivatedRoute, private _propertyService: PropertyService, private _tenantService: TenantService, private modal: NgbModal, private config: ConfigService ) { }
 
 	property: IProperty;
 	tenants: ITenant[];
-	encodedTenantId: string;
+	selectedTenantUrl: string;
+	copied: boolean = false;
+
 
 	ngOnInit() {
 		this._route.params.subscribe(params => {
@@ -27,8 +29,10 @@ export class PropertyTenantsComponent implements OnInit {
 		})
 	}
 
-	open(content: any, tenantId: number) {
-		this.encodedTenantId = btoa("" + tenantId);
+	open(content: any, tenantId: string) {
+		this.selectedTenantUrl = this.config.getUrl() + "/tenant-calendar/" + tenantId;
+		this.copied = false;
+		console.log(this.selectedTenantUrl);
 		this.modal.open(content);
 	}
 }

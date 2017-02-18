@@ -14,7 +14,7 @@
         <tr *ngFor='let property of properties'>
           <td><a>{{property.address}}</a></td>
           <td><button [routerLink]="['/property-calendar', property.id]" type="link" class="btn btn-link">Calendar</button>
-            <td><button [routerLink]="['/property-tenants', property.id]" type="link" class="btn btn-link">Tenants</button>
+          <td><button [routerLink]="['/property-tenants', property.id]" type="link" class="btn btn-link" [disabled]="!auth.hasRole('AdminRole')">Tenants</button>
         </tr>
       </tbody>
     </table>

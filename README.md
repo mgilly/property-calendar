@@ -17,9 +17,6 @@ Details:
   - administrator can see list of properties and tenants living there
   - administrator can create a single-use link for tenant to access calendar
 
-## Prerequisite
-
-http://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
 

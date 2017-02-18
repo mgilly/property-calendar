@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModule } from 'angular-calendar';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { ConfigService } from './config.service';
 import { AuthGuard } from './authn/auth-guard';
@@ -49,12 +50,13 @@ import { SignUpComponent } from './sign-up/sign-up.component';
         { path: 'properties', component: PropertyListComponent, canActivate: [AuthGuard] },
         { path: 'property-calendar/:id', component: PropertyCalendarComponent, canActivate: [AuthGuard] },
         { path: 'property-tenants/:id', component: PropertyTenantsComponent, canActivate: [AuthGuard] },
-        { path: 'tenant-calendar/:hash', component: TenantCalendarComponent, canActivate: [AuthGuard] },
+        { path: 'tenant-calendar/:id', component: TenantCalendarComponent },
         { path: '', redirectTo: 'properties', pathMatch: 'full'},
         { path: '**', redirectTo: 'properties', pathMatch: 'full'}
     ]),
     NgbModule.forRoot(),
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    ClipboardModule,
   ],
   providers: [
       {provide: Window, useValue: window},

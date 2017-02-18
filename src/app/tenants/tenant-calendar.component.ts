@@ -48,8 +48,8 @@ export class TenantCalendarComponent implements OnInit {
 
 	ngOnInit() {
 		this._route.params.subscribe(params => {
-			let hash = "" + params['hash'];
-			this._tenantService.findTenantByHash(hash).subscribe(t => this.tenant = t);
+			let tenantId = "" + params['id'];
+			this._tenantService.findTenantById(tenantId).subscribe(t => this.tenant = t);
 			this.events = this.workdayService.findAll().map(workdays => {
 				var events = [];
 				workdays.filter(workday => workday.propertyId === this.tenant.propertyId).forEach(workday => {
