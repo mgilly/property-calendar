@@ -24,7 +24,21 @@
 			</div>
 			<mwl-calendar-week-view
 			  [viewDate]="viewDate"
-			  [events]="(events | async) || []">
+			  [events]="(events | async) || []"
+				(eventClicked)="eventClicked($event)">
 			</mwl-calendar-week-view>
 		</div>
 	</div>
+
+	<template #content let-close="close">
+	  <div class="modal-header">
+	    <h4 class="modal-title">Bestatigung</h4>
+	  </div>
+		<div class="modal-body">
+      <p>Der Temin wurde fix fur Sie gebucht, </p>
+    </div>
+	  <div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="confirm()">Ja</button>
+	    <button type="button" class="btn btn-secondary" (click)="close()">Nein</button>
+	  </div>
+	</template>

@@ -4,6 +4,6 @@ export interface ITenant {
 	firstName: string;
   lastName: string;
   email: string;
-  doorNum: string;
-  hash: string;
+  building: string;
+  flat: string;
 }

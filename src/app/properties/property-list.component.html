@@ -5,19 +5,35 @@
         <h4 class="card-title">Properties</h4>
       </div>
       <div class="col-2">
-        <button class="btn btn-outline-primary btn-block disabled" type="button">Add</button>
+        <button class="btn btn-outline-primary float-right" (click)="open(content)" type="button" [disabled]="!auth.hasRole('AdminRole')">add</button>
       </div>
     </div>
-    <!-- <div class='table-responsive' *ngIf='cars && cars.length'> -->
-    <table class="table table-hover">
-      <tbody>
-        <tr *ngFor='let property of properties'>
+    <table class="table table-hover" >
+      <tbody *ngIf="properties?.length > 0">
+        <tr *ngFor='let property of properties' >
           <td><a>{{property.address}}</a></td>
           <td><button [routerLink]="['/property-calendar', property.id]" type="link" class="btn btn-link">Calendar</button>
           <td><button [routerLink]="['/property-tenants', property.id]" type="link" class="btn btn-link" [disabled]="!auth.hasRole('AdminRole')">Tenants</button>
         </tr>
       </tbody>
     </table>
-    <!-- </div> -->
   </div>
 </div>
+
+<template #content let-close="close">
+  <div class="modal-header">
+    <h4 class="modal-title">Add property</h4>
+  </div>
+  <div class="modal-body">
+      <div class="form-group row">
+        <label for="address" class="col-2 col-form-label">Address</label>
+          <div class="col-10">
+          <input id="address" [(ngModel)]="address" class="form-control" type="text">
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addProperty()">Add</button>
+      <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+  </div>
+</template>

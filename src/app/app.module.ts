@@ -21,6 +21,7 @@ import { PropertyService } from './properties/property.service';
 
 import { TenantCalendarComponent } from './tenants/tenant-calendar.component'
 import { TenantService } from './tenants/tenant.service';
+import { TenantEventConfirmationComponent } from './tenants/tenant-event-confirmation.component';
 
 import { WorkdayService } from './events/workday.service';
 import { EventService } from './events/event.service';
@@ -38,6 +39,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     SignInComponent,
     SignUpComponent,
     TenantCalendarComponent,
+    TenantEventConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +53,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
         { path: 'property-calendar/:id', component: PropertyCalendarComponent, canActivate: [AuthGuard] },
         { path: 'property-tenants/:id', component: PropertyTenantsComponent, canActivate: [AuthGuard] },
         { path: 'tenant-calendar/:id', component: TenantCalendarComponent },
+        { path: 'tenant-event-confirmation', component: TenantEventConfirmationComponent },
         { path: '', redirectTo: 'properties', pathMatch: 'full'},
         { path: '**', redirectTo: 'properties', pathMatch: 'full'}
     ]),

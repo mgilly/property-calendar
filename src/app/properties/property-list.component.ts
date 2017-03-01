@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { IProperty } from './property';
 import { PropertyService } from './property.service';
 import { AuthService } from '../authn/auth.service';
@@ -7,11 +9,36 @@ import { AuthService } from '../authn/auth.service';
 	templateUrl: './property-list.component.html'
 })
 export class PropertyListComponent implements OnInit {
-	properties: IProperty[];
+	properties: IProperty[] = [];
 
-	constructor(private _propertyService: PropertyService, private auth: AuthService) {}
+	constructor(private _propertyService: PropertyService, private auth: AuthService, private modal: NgbModal) {}
+
+	// modal and properties
+  @ViewChild('content') modalContent: TemplateRef<any>;
+  modalRef: NgbModalRef;
+	address: string;
 
 	ngOnInit() {
+		console.log(this.properties);
 		this._propertyService.getProperties().subscribe(properties => this.properties = properties);
 	}
+
+	addProperty() {
+    console.log("address", this.address);
+    var property: IProperty = {
+      id : "",
+      address : this.address
+    }
+    // save event in database
+    this._propertyService.save(property);
+
+    // if successfull add it to the list
+    this.properties.push(property);
+
+    this.modalRef.close();
+  }
+
+	open(content) {
+    this.modalRef = this.modal.open(content);
+  }
 }

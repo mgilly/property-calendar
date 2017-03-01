@@ -15,7 +15,7 @@ export class SignInComponent implements OnInit {
     this.authService.logout();
   }
 
-  logAsAdmin(event) {
+  logAsAdmin() {
 		// get return url from route parameters or default to '/'
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 		console.log('this.returnUrl: ' + this.returnUrl);
@@ -24,12 +24,12 @@ export class SignInComponent implements OnInit {
     this.router.navigate([this.returnUrl]);
   }
 
-  logAsWorker(event) {
+  logAsWorker(name: string) {
 		// get return url from route parameters or default to '/'
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 		console.log('this.returnUrl: ' + this.returnUrl);
 
-		this.authService.login("worker", "WorkerRole")
+		this.authService.login(name, "WorkerRole")
     this.router.navigate([this.returnUrl]);
   }
 }

@@ -13,6 +13,10 @@ import { IProperty } from './property';
 import { WorkdayService } from '../events/workday.service';
 import { IWorkday } from '../events/workday';
 
+interface WorkdayEvent extends CalendarEvent {
+  workday: IWorkday;
+}
+
 @Component({
   templateUrl: './property-calendar.component.html',
 })
@@ -32,6 +36,7 @@ export class PropertyCalendarComponent implements OnInit {
       if (!this.dateIsValid(day.date)) {
         day.cssClass = 'cal-disabled';
       }
+      day.badgeTotal = day.events.filter(event => event.title != 'neu').length;
     }.bind(this);
     this.dateOrViewChanged();
   }
@@ -39,16 +44,16 @@ export class PropertyCalendarComponent implements OnInit {
   // modal and properties
   @ViewChild('content') modalContent: TemplateRef<any>;
   modalRef: NgbModalRef;
-  start: any = new Date();
-  end: any = new Date();
+  start: any = "09:00";
+  end: any = "17:00";
 
   actions: CalendarEventAction[] = [
-    // {
-    // label: '<i class="fa fa-fw fa-times"></i>',
-    // onClick: ({event}: {event: CalendarEvent}): void => {
-    //   this.events = this.events.filter(iEvent => iEvent !== event);
-    //   }
-    // }
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      onClick: ({event}: {event: WorkdayEvent}): void => {
+        this.deleteEvent(event);
+      }
+    }
   ];
 
   refresh: Subject<any> = new Subject();
@@ -66,31 +71,37 @@ export class PropertyCalendarComponent implements OnInit {
   nextBtnDisabled: boolean = false;
 
   ngOnInit() {
+    // add 'new' event for each day
+    var startDate = addDays(this.minDate, 1);
+    var endDate = this.maxDate;
+    for(var date = startDate; date <= endDate; date = addDays(date, 1)) {
+      this.events.push({
+        title: "neu",
+        start: new Date(date),
+        color: colors.white,
+      });
+    }
+
+    // add workdays
     this._route.params.subscribe(params => {
       let propertyId = params['id'];
       this._propertyService.getProperty(propertyId).subscribe(property => this.property = property);
       this.workdayService.findAll().subscribe(workdays => {
-        workdays.filter(workday => workday.propertyId === propertyId).forEach(workday => this.events.push({
-          title: workday.start.substring(11, 16) + " - " + workday.end.substring(11, 16) + " (" + workday.workerId + ")",
-          start: new Date(workday.start),
-          end: new Date(workday.end),
-          color: colors.blue,
-          actions: this.actions
-        }));
-        this.refresh.next();
+        workdays.filter(workday => workday.propertyId === propertyId).forEach(workday => this.events.push(this.createEvent(workday)));
       })
     });
+    this.refresh.next();
   }
 
   addEvent() {
     var startDateTime = new Date(this.viewDate);
-    startDateTime.setHours(parseInt(this.start.substring(0, 2)));
-    startDateTime.setMinutes(0);
-    startDateTime.setSeconds(0);
+    startDateTime.setUTCHours(parseInt(this.start.substring(0, 2)));
+    startDateTime.setUTCMinutes(0);
+    startDateTime.setUTCSeconds(0);
     var endDateTime = new Date(this.viewDate);
-    endDateTime.setHours(+this.end.substring(0, 2));
-    endDateTime.setMinutes(0);
-    endDateTime.setSeconds(0);
+    endDateTime.setUTCHours(parseInt(this.end.substring(0, 2)));
+    endDateTime.setUTCMinutes(0);
+    endDateTime.setUTCSeconds(0);
     console.log("start/end", startDateTime.toJSON(), endDateTime.toJSON());
     var workday: IWorkday = {
       id : "",
@@ -103,17 +114,16 @@ export class PropertyCalendarComponent implements OnInit {
     this.workdayService.save(workday);
 
     // if successfull add it to calendar
-    this.events.push({
-       title: workday.start.substring(11, 16) + " - " + workday.end.substring(11, 16) + " (" + workday.workerId + ")",
-       start: startDateTime,
-       end: endDateTime,
-       color: colors.blue,
-       actions: this.actions
-     });
-
+    this.events.push(this.createEvent(workday));
     this.refresh.next();
 
+    // close modal
     this.modalRef.close();
+  }
+
+  deleteEvent(event: WorkdayEvent): void {
+      this.workdayService.delete(event.workday);
+      this.events = this.events.filter(e => e !== event);
   }
 
   open(content) {
@@ -121,12 +131,15 @@ export class PropertyCalendarComponent implements OnInit {
   }
 
   eventClicked({event}: { event: CalendarEvent }): void {
+    if(event.title === 'neu') {
+      this.viewDate = event.start;
+      this.modalRef = this.modal.open(this.modalContent, { size: 'sm' });
+    }
   }
 
   dayClicked({date, events}: { date: Date, events: CalendarEvent[] }): void {
     if (
-      (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-      events.length === 0
+      (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true)
     ) {
       this.activeDayIsOpen = false;
     } else {
@@ -134,10 +147,6 @@ export class PropertyCalendarComponent implements OnInit {
     }
 
     this.viewDate = date;
-
-    if(events.length == 0) {
-      this.modalRef = this.modal.open(this.modalContent, { size: 'sm' });
-    }
   }
 
   increment(): void {
@@ -171,4 +180,14 @@ export class PropertyCalendarComponent implements OnInit {
     }
   }
 
+  createEvent(workday : IWorkday) : WorkdayEvent {
+    return {
+      title: workday.start.substring(11, 16) + " - " + workday.end.substring(11, 16) + " (" + workday.workerId + ")",
+      start: new Date(workday.start),
+      end: new Date(workday.end),
+      color: colors.blue,
+      actions: this.actions,
+      workday: workday,
+    };
+	}
 }

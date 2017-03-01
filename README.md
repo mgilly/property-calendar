@@ -8,14 +8,14 @@ Demo would look like this:
    Worker enters possible slots he has available in a calendar (one cal per property and company (with multiple workers). Tenants get a one time link that leads to the cal; they can see available slots and "book" them.
 
 Details:
-  - worker has to see all available properties
-  - for all properties there is a separate calendar
-  - worker choose a day and defines from-to hours of availibility, set of 30 minutes "available" events are created
-  - tenant can see a property calendar where all selected by workers period are visible
+  + worker has to see all available properties
+  + for all properties there is a separate calendar
+  + worker choose a day and defines from-to hours of availibility, set of 30 minutes "available" events are created
+  + tenant can see a property calendar where all selected by workers period are visible
   - tenant can select one of the periods where he will be in property
   - administrator can see a company calendar with all workers events combined
-  - administrator can see list of properties and tenants living there
-  - administrator can create a single-use link for tenant to access calendar
+  + administrator can see list of properties and tenants living there
+  + administrator can create a single-use link for tenant to access calendar
 
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.

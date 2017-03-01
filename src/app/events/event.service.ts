@@ -18,6 +18,8 @@ export class EventService {
 		var _url: string = this.config.getServiceUrl() + this.url;
 	  return this.http.get(_url).map((response: Response) => {
 			var body = response.json()
+			// special handling for Spring Rest empty value
+			if(!body.content[0].id) return <IEvent[]>[];
 			return <IEvent[]> body.content;
 		});
 	}

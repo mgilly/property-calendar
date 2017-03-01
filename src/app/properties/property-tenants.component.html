@@ -1,25 +1,27 @@
-<div class="col-10 offset-1" *ngIf="property != null && tenants != null">
+<div class="col-10 offset-1" *ngIf="property != null">
   <div class="card-block">
     <div class="row">
       <div class="col-10">
         <h4 class="card-title">Tenants: {{property.address}}</h4>
       </div>
       <div class="col-2">
-        <button class="btn btn-outline-primary btn-block disabled" type="button">Add</button>
+        <button class="btn btn-outline-primary float-right" (click)="openTenant(tenantContent, null)" type="button" [disabled]="!auth.hasRole('AdminRole')">add</button>
       </div>
     </div>
     <!-- <div class='table-responsive' *ngIf='cars && cars.length'> -->
-    <table class="table table-hover">
+    <table class="table table-hover" *ngIf="tenants?.length > 0">
       <thead>
-        <th>Door</th>
         <th>Name</th>
+        <th>Gebaude</th>
+        <th>Einheit</th>
         <th>email</th>
         <th>calendar</th>
       </thead>
-      <tbody>
+      <tbody >
         <tr *ngFor='let tenant of tenants'>
-          <td>{{tenant.doorNum}}</td>
-          <td>{{tenant.firstName}} {{tenant.lastName}}</td>
+          <td><button class="btn-link" (click)="openTenant(tenantContent, tenant.id)">{{tenant.firstName}} {{tenant.lastName}}</button></td>
+          <td>{{tenant.building}}</td>
+          <td>{{tenant.flat}}</td>
           <td>{{tenant.email}}</td>
           <td>
             <button class="btn btn-outline-primary btn-block" type="button" (click)="open(content, tenant.id)">create</button>
@@ -48,6 +50,48 @@
     </div>
   </div>
   <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+  </div>
+</template>
+
+<template #tenantContent let-close="close">
+  <div class="modal-header">
+    <h4 class="modal-title">Tenant</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label for="firstName" class="col-3 col-form-label">first name</label>
+        <div class="col-9">
+        <input id="firstName" [(ngModel)]="selectedTenant.firstName" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="lastName" class="col-3 col-form-label">last name</label>
+        <div class="col-9">
+        <input id="lastName" [(ngModel)]="selectedTenant.lastName" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="doorNum" class="col-3 col-form-label">building</label>
+        <div class="col-9">
+        <input id="doorNum" [(ngModel)]="selectedTenant.building" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="doorNum" class="col-3 col-form-label">flat</label>
+        <div class="col-9">
+        <input id="doorNum" [(ngModel)]="selectedTenant.flat" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-3 col-form-label">email</label>
+        <div class="col-9">
+        <input id="email" [(ngModel)]="selectedTenant.email" class="form-control" type="text">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveTenant()">Save</button>
       <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
   </div>
 </template>

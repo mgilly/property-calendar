@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { isSameDay, isSameMonth, addMinutes, addDays, addWeeks, addMonths, subWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarEventAction } from 'angular-calendar';
 import { colors } from '../const/colors';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import 'rxjs/add/operator/mergeMap';
 
 import { TenantService } from '../tenants/tenant.service';
@@ -24,7 +25,9 @@ export class TenantCalendarComponent implements OnInit {
 	constructor(
 		private _route: ActivatedRoute,
 		private _tenantService: TenantService,
-	  private workdayService: WorkdayService) {
+	  private workdayService: WorkdayService,
+	  private modal: NgbModal,
+	  private router: Router) {
 			this.dayModifier = function(day: CalendarMonthViewDay): void {
 	      if (!this.dateIsValid(day.date)) {
 	        day.cssClass = 'cal-disabled';
@@ -32,6 +35,10 @@ export class TenantCalendarComponent implements OnInit {
 	    }.bind(this);
 	    this.dateOrViewChanged();
 		}
+
+	modalRef: NgbModalRef;
+		  // tenant link modal
+	@ViewChild('content') modalContent: TemplateRef<any>;
 
 	refresh: Subject<any> = new Subject();
 
@@ -71,7 +78,18 @@ export class TenantCalendarComponent implements OnInit {
 
   eventClicked({event}: {event: CalendarEvent}): void {
     console.log('Event clicked', event);
+		this.modalRef = this.modal.open(this.modalContent);
   }
+
+	// open(content: any, tenantId: string) {
+	// 	this.selectedTenantUrl = this.config.getUrl() + "/tenant-calendar/" + tenantId;
+	//
+	// }
+
+  confirm(): void {
+		this.modalRef.close();
+		this.router.navigate(["/tenant-event-confirmation"]);
+	}
 
 	increment(): void {
     this.changeDate(addWeeks(this.viewDate, 1));

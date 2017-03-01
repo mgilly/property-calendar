@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -20,6 +20,8 @@ export class TenantService {
 		var _url: string = this.config.getServiceUrl() + this.url;
 	  return this.http.get(_url).map((response: Response) => {
 			var body = response.json()
+			// special handling for Spring Rest empty value
+			if(!body.content[0].id) return <ITenant[]>[];
 			return <ITenant[]> body.content;
 		});
 	}
@@ -33,8 +35,12 @@ export class TenantService {
 			.map((tenants: ITenant[]) => tenants.find(p => p.id == id));
 	}
 
-	findTenantByHash(hash: string): Observable<ITenant> {
-		return this.getAllTenants()
-			.map((tenants: ITenant[]) => tenants.find(p => p.hash == hash));
+	save(tenant: ITenant) {
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+		var _url: string = this.config.getServiceUrl() + this.url;
+		console.log("post", _url, tenant, options);
+		this.http.post(_url, tenant, options).subscribe(data => { console.log(data) });
 	}
 }
